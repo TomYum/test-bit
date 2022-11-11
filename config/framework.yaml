@@ -6,6 +6,8 @@ parameters:
   redis.port: "6379"
   redis.auth: "secret"
 
+  redis.stat.primary_key: "country_stat"
+
 services:
   redis:
     class: Redis
