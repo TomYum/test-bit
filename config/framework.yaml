@@ -16,3 +16,15 @@ services:
       - ["auth",["%redis.auth%"]]
 
 
+  app.repository.statistic.read:
+    class: App\Repository\Read\RedisRepository
+    arguments:
+      - '@redis'
+      - '%redis.stat.primary_key%'
+
+  app.repository.statistic.persist:
+    class: App\Repository\Persist\RedisRepository
+    arguments:
+      - '@redis'
+      - '%redis.stat.primary_key%'
+
