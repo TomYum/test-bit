@@ -1,2 +1,16 @@
 framework:
   secret: S0ME_SECRET
+
+parameters:
+  redis.host: "127.0.0.1"
+  redis.port: "6379"
+  redis.auth: "secret"
+
+services:
+  redis:
+    class: Redis
+    calls:
+      - [ "connect",["%redis.host%", "%redis.port%"]]
+      - ["auth",["%redis.auth%"]]
+
+
