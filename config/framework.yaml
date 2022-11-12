@@ -64,12 +64,13 @@ services:
       $repository: '@app.repository.statistic.persist'
       $responseFactory: '@app.response_factory'
       $validator: '@app.validator.country_code.predefined'
+      $converter: '@app.converter.country_code'
 
   app.validator.country_code.predefined:
     class: App\Validator\CountryCode\Predefined
     arguments:
       $codes: ['ru','us','it','nd']
-      $convertor: '@app.convertor.country_code'
+      $converter: '@app.converter.country_code'
 
-  app.convertor.country_code:
-    class: App\Converter\CountryCodeConvertor
+  app.converter.country_code:
+    class: App\Converter\CountryCodeConverter

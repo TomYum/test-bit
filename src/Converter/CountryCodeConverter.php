@@ -4,7 +4,7 @@ namespace App\Converter;
 
 use App\Validator\CountryCode\CountryCodeValidatorInterface;
 
-class CountryCodeConvertor implements CountryCodeConverterInterface
+class CountryCodeConverter implements CountryCodeConverterInterface
 {
     public function convert(string $code): string
     {
