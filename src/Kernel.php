@@ -22,19 +22,12 @@ class Kernel extends BaseKernel
     protected function configureContainer(ContainerConfigurator $c): void
     {
         $c->import(__DIR__.'/../config/framework.yaml');
-
-        // register all classes in /src/ as service
-        $c->services()
-            ->load('App\\', __DIR__.'/*')
-            ->autowire()
-            ->autoconfigure()
-        ;
     }
 
     protected function configureRoutes(RoutingConfigurator $routes): void
     {
         // load the annotation routes
-        $routes->import(__DIR__.'/Controller/', 'annotation');
+        $routes->import(__DIR__.'/../config/routes.yaml', 'yaml');
     }
 
     // optional, to use the standard Symfony cache directory

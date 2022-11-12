@@ -1,0 +1,10 @@
+
+statistic.get:
+  path: /stat
+  controller: "app.controller.statistic.get::getStat"
+  methods: [GET,HEAD]
+
+statistic.increment:
+  path: /stat/{countryCode}
+  controller: "app.controller.statistic.update::incStat"
+  methods: [POST]

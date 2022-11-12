@@ -15,16 +15,61 @@ services:
       - [ "connect",["%redis.host%", "%redis.port%"]]
       - ["auth",["%redis.auth%"]]
 
+## controllers
+  app.controller.statistic.get:
+    class: App\Controller\GetStatisticController
+    public: true
+    calls:
+      - method: setContainer
+        arguments: [ '@service_container' ]
+    arguments:
+      $getService: '@app.service.statistic.get'
 
+  app.controller.statistic.update:
+    class: App\Controller\IncStatController
+    public: true
+    calls:
+      - method: setContainer
+        arguments: [ '@service_container' ]
+    arguments:
+      $service: '@app.service.statistic.update'
+
+## repositories
   app.repository.statistic.read:
     class: App\Repository\Read\RedisRepository
     arguments:
-      - '@redis'
-      - '%redis.stat.primary_key%'
+      $redis: '@redis'
+      $primaryKey: '%redis.stat.primary_key%'
 
   app.repository.statistic.persist:
     class: App\Repository\Persist\RedisRepository
     arguments:
-      - '@redis'
-      - '%redis.stat.primary_key%'
+      $redis: '@redis'
+      $primaryKey: '%redis.stat.primary_key%'
 
+## factory
+  app.response_factory:
+    class: App\Factory\ResponseFactory
+
+## services
+  app.service.statistic.get:
+    class: App\Services\GetStatistic\Service
+    arguments:
+      $repository: '@app.repository.statistic.read'
+      $responseFactory: '@app.response_factory'
+
+  app.service.statistic.update:
+    class: App\Services\UpdateStatistic\Service
+    arguments:
+      $repository: '@app.repository.statistic.persist'
+      $responseFactory: '@app.response_factory'
+      $validator: '@app.validator.country_code.predefined'
+
+  app.validator.country_code.predefined:
+    class: App\Validator\CountryCode\Predefined
+    arguments:
+      $codes: ['ru','us','it','nd']
+      $convertor: '@app.convertor.country_code'
+
+  app.convertor.country_code:
+    class: App\Converter\CountryCodeConvertor

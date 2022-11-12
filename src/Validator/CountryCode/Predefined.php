@@ -2,6 +2,8 @@
 
 namespace App\Validator\CountryCode;
 
+use App\Converter\CountryCodeConverterInterface;
+
 class Predefined implements CountryCodeValidatorInterface
 {
     /**
@@ -10,11 +12,27 @@ class Predefined implements CountryCodeValidatorInterface
     private $codes;
 
     /**
-     * @param array $codes
+     * @var CountryCodeConverterInterface
      */
-    public function __construct(array $codes = [])
+    private $convertor;
+
+    /**
+     * @param string[]                      $codes
+     * @param CountryCodeConverterInterface $convertor
+     */
+    public function __construct(array $codes, CountryCodeConverterInterface $convertor)
     {
-        $this->codes = $codes;
+        $this->convertor = $convertor;
+        $this->codes = $this->prepareCodes($codes);
+    }
+
+    private function prepareCodes(array $codes): array{
+        return array_map(
+            function (string $code): string {
+                return $this->convertor->convert($code);
+            },
+            $codes
+        );
     }
 
     public function validate(string $code): bool
