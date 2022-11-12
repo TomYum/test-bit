@@ -53,7 +53,7 @@ class Service implements ServiceInterface
                 : $this->updateValue($countryCode);
     }
 
-    private function updateValue(string $countryCode)
+    private function updateValue(string $countryCode): Response
     {
         try {
             $this->repository->incrementValue(

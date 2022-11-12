@@ -1,0 +1,82 @@
+openapi: 3.0.3
+info:
+  title: StatisticMicroservice
+  description: the service collects visitor statistics by country
+  version: 0.0.1
+
+servers:
+  - url: https://statistic-service.ty
+tags:
+  - name: country
+    description: grouped by country code
+
+paths:
+  /stat/{countryCode}:
+    post:
+      tags:
+        - country
+      summary: increment statistic
+      description: increment statistic
+      operationId: incrementCountryStat
+      parameters:
+        - name: countryCode
+          in: path
+          description: country code
+          required: true
+          schema:
+            type: string
+          example: TH
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: validation error
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /stat:
+    get:
+      tags:
+        - country
+      summary: provides statistics by country
+      operationId: getstat
+      responses:
+        '200':
+          description: statistics by country
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: integer
+                example:
+                  RU: 38273
+                  US: 12947773
+                  IT: 3947773
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: internal error occurred
